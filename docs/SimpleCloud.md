@@ -2,6 +2,7 @@
 id: SimpleCloud
 title: "Network Architecture"
 sidebar_label: "Network Architecture"
+custom_edit_url: https://github.com/tradle/simplecloud/blob/main/README.md
 ---
 
 ## Your Network
@@ -14,6 +15,7 @@ CloudPal sits on a fast and reliable network and is always on, and thus it can h
 
 ### A private network that you operate
 You are familiar with the local network today, sitting behind your home router. But when you travel, when you go to work, when you want to add other machines, at a different location, or even your car, how do you do that? CloudPal creates an encrypted distributed network so that devices at your different locations, on different cell / WiFi networks, appear to be on one local network and can communicate without Big Tech at the center. 
+
 
 ### Adding devices to the network
 How will the devices find each other without a central server? How will we add new devices and remove them when they get stolen or replaced? Apparently the P2P tech has recently evolved to help us achieve just that. Keep reading.

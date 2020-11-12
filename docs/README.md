@@ -3,6 +3,7 @@ id: README
 title: "Tradle on P2P & Local Cloud"
 sidebar_label: "P2P & Local Cloud"
 slug: /
+custom_edit_url: https://github.com/tradle/why-hypercore/blob/master/README.md
 ---
 
 # Personal Data in multi-device world <!-- omit in toc -->

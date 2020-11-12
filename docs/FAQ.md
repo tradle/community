@@ -2,6 +2,7 @@
 id: FAQ
 title: "Data Architecture"
 sidebar_label: "Data Architecture"
+custom_edit_url: https://github.com/tradle/why-hypercore/blob/master/FAQ.md
 ---
 
 ## Hypercore universe  <!-- omit in toc --> 

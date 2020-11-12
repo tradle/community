@@ -1,6 +1,7 @@
 ---
 id: About
 title: About this site
+custom_edit_url: https://github.com/tradle/community.github.io/blob/master/docs/About.md
 ---
 This site was created using Docusaurus and is hosted on AWS S3.
 
