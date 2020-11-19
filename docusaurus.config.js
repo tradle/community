@@ -1,8 +1,8 @@
 module.exports = {
   title: 'Community',
   tagline: 'Tradle Hypercore Cloud',
-  url: 'https://tradle.io',
-  baseUrl: '/',
+  url: 'https://tradle.github.io',
+  baseUrl: '/community/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon4.ico',
   organizationName: 'tradle', // Usually your GitHub org/user name.
