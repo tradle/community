@@ -2,7 +2,7 @@ module.exports = {
   title: 'Community',
   tagline: 'Tradle Hypercore Cloud',
   url: 'https://tradle.io',
-  baseUrl: '/community/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon4.ico',
   organizationName: 'tradle', // Usually your GitHub org/user name.
@@ -100,6 +100,7 @@ module.exports = {
       {
         hashed: true,
         indexBlog: false,
+        highlightSearchTermsOnTargetPage: true,
       }
     ]
   ],
