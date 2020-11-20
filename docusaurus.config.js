@@ -6,7 +6,7 @@ module.exports = {
   onBrokenLinks: 'throw',
   favicon: 'img/favicon4.ico',
   organizationName: 'tradle', // Usually your GitHub org/user name.
-  projectName: 'community.github.io', // Usually your repo name.
+  projectName: 'community', // Usually your repo name.
   themeConfig: {
     navbar: {
       logo: {
