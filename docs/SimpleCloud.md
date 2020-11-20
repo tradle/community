@@ -5,7 +5,9 @@ sidebar_label: "Network Architecture"
 custom_edit_url: https://github.com/tradle/simplecloud/blob/main/README.md
 ---
 
-## Your Network
+CloudPal comes with 3 major components: personal and private Network, Compute and Data. Here we focus on the Network, See separate articles on [personal Data](/docs/index.html) and, later on, on personal Compute.
+
+## Your Network`
 Today we rely on Google and other Big Tech companies to connect our devices in order to sync photos, email, and documents. In fact most of our apps today go via some form of a central player. We pay the price for this convenience with lost privacy as we put ourselves under non-stop corporate surveillance. 
 
 Peer-to-Peer (P2P) apps today lack the convenience of cloud-based apps. The judo move it to leverage Cloud's strength for P2P.
@@ -15,7 +17,6 @@ CloudPal sits on a fast and reliable network and is always on, and thus it can h
 
 ### A private network that you operate
 You are familiar with the local network today, sitting behind your home router. But when you travel, when you go to work, when you want to add other machines, at a different location, or even your car, how do you do that? CloudPal creates an encrypted distributed network so that devices at your different locations, on different cell / WiFi networks, appear to be on one local network and can communicate without Big Tech at the center. 
-
 
 ### Adding devices to the network
 How will the devices find each other without a central server? How will we add new devices and remove them when they get stolen or replaced? Apparently the P2P tech has recently evolved to help us achieve just that. Keep reading.
@@ -29,7 +30,7 @@ Traditional VPN offers protection of connecting you to the Internet securely. Pe
 | Function | Traditional (shared) VPN | Personal VPN | Notes | 
 | --- | --- | --- | --- |
 | All devices hide behind the VPN | Yes | Yes |
-| 'No recording' of decrypted data | Impossible to verify | Yes | We do not run own VPN server, you do - on your own CloudPal|
+| 'No recording' of data | Impossible to verify | Yes | Any VPN decrypts your traffic and can read it in clear text. Some sell it. But here we can't read it, as it is end-to-end encrypted all the way to your own VPN, running in CloudPal.|
 | 'No logging' for your browsing clicks | Impossible to verify | Yes | You run your own VPN. You choose to log or not to log. By default - no logging|
 | Unlimited number of devices | No | Yes | Use it on your phone, tablet, laptop, desktop. Use it yourself, give to your kids |
 | Virtual network for all your devices| No | Yes | That is direct connections betweem your devices, no matter where they are. Apps that use this, feel magical. Stay tuned... |
@@ -40,7 +41,9 @@ Traditional VPN offers protection of connecting you to the Internet securely. Pe
 
 ### Common VPN features
 - **Stop password and data theft** by securing your line on public WiFi (cafe, airport, hospital, etc). Public WiFi is the feeding ground for hackers-in-training, it is that easy to spy on you there. Use VPN. Stay safe!
-- **Privacy from ISP**. No more snooping by your internet provider. This includes your mobile operator too! They see all your browsing and may record your browsing history. Yikes!
+- **Privacy from others on local network**. You may not be on a public WiFi, but a guest in AirBnb, hotel or visiting some company and are connecting to their network. Stay safe!
+- **Privacy from ISP**. No more snooping by your internet provider. This includes your mobile operator too! They see all your browsing and may record your browsing history and sell it. Yikes!
+
 
 ### Unique Privacy features
 - **You run VPN in the privacy of your own CloudPal**, and the only thing better than that is to run a dedicated machine on a reliable broadband network, but how many of us can be bothered doing that?
@@ -69,14 +72,7 @@ This solution is built for privacy. If you want to use it to mask potentially il
 - Torrenting the movies or other copyrighted materials. Raids on VPN-enabled torrenting happened in the past. This is your CloudPal, use it responsibly.
 - Location switching to watch international Netflix shows, this violates Netflix's terms of service, and if you get locked out of Netflix, do not blame us.
 
-We help you increase your privacy. But no privacy is absolute, even on the device you hold in your hand. So it is important for you to understand the limitations on our ability to protect you, and how we will continue to improve our solution:
-
-- **No snooping by us**. We do not have an ability to access your data, secret keys or network activity. But as we accept payments from you, we may know who you are, if you use the credit card payment mechanism. If you do not want that, pay us please with cryptocurrency if your jurisdiction allows it.
-- **Limiting Data Center's powers of snooping**. There are two companies you need to watch out for. Your VPN provider, that is us, and the Data Center. We can't know what you are doing, as you operate your own CloudPal, and only you have access to it. As to the Data Center, you are fairly well isolated by running in your own VM. But this is not an absolute protection. What remains is:
-    - The Data Center can take your VM's operating memory snapshot and try to deduce some information from it. Note that all cloud providers have this capability. Yet, the solution for this is coming - encrypted memory for virtual machines will be possible in about a year. Note that this relates only to data in RAM, while the data kept in storage are always encrypted.
-    - you will have an ability to choose the Data Center in which your CloudPal will run.
-    - your home router or your mobile on a cell phone network will reveal their network IP address to the Data Center's network. This is standard with the IP protocol used by the Internet. This does not reveal any transmitted data, just the source IP address (e.g. router) and the destination IP which is the address of your virtual machine. You can't hide the destination, but if you want to hide your source IP address, your need to look for Tor or other similar solutions. 
-- **Government agency**. CloudPal drastically increases your privacy, but the government agency may come knocking. We can't help such an agency, as we have no access to your CloudPal. The government can and will be able to compel the Data Center to perform the above actions, using the due process or covertly. You need to obey the law of your jurisdiction.
+We help you increase your privacy. But no privacy is absolute, even on the device you hold in your hand. So it is important for you to understand the limitations on our ability to protect you, and how we will continue to improve our solution. Read on.
 
 ## Background
 _The world seems to swing back and forth between personal and shared computing models. We are about to enter into another cycle of Personal computing, CloudPal._ 
@@ -93,9 +89,26 @@ CloudPal will restore the Internet to the prior conditions when app companies di
 
 2. We live in an increasingly multi-device world, with mobiles, tablets, PCs, vehicle and home automation computing devices coming online at a rapid pace. We need a personal system to manage those devices and help them exchange data securely. Consider CloudPal as one of such devices, a linchpin in such a system, helping connect, sync, coordinate, recover and transition all other devices. CloudPal is the most reliable of our devices, the most adaptive to our network, storage and processing needs. CloudPal is also the one that evolves the fastest of them all.
 
-CloudPal comes with 3 major components: Network, Compute and Data virtualization. Here we focus on the Software Defined Network designed for personal use. See separate articles on [single-tenant Personal Data system](https://github.com/tradle/why-hypercore) and on Virtual Compute (to be posted later).
-
 ## FAQ
-**How can I trust what you claim here?** We are 100% open source, so every claim can be verified by experts. We will provide official security audits in due course.
+### How can I trust what you claim here? 
+We are 100% open source, so every claim can be verified by experts. We will provide official security audits in due course.
 
-**What is a private virtual network?** A number of open source offerings exist for this. Take a look at Tinc, Wormhole, Zerotier. Here is a technical video for [Zerotier](https://www.youtube.com/watch?v=Bl_Vau8wtgc) that does a good job explaining Software Defined Network (SDN) and Software-Defined Wide Area Network (SD-WAN) and how they relate to VPN.
+### What is a private virtual network? 
+A number of open source offerings exist for this. Take a look at Tinc, Wormhole, Zerotier. Here is a technical video for [Zerotier](https://www.youtube.com/watch?v=Bl_Vau8wtgc) that does a good job explaining Software Defined Network (SDN) and Software-Defined Wide Area Network (SD-WAN) and how they relate to VPN.
+
+### CloudPal vs Virtual Private Server in the cloud (VPS)
+VPS is what existed even before Cloud, they are being sold by Linode, DigitalOcean, OVH and a dozens of others
+How is CloudPal different?
+
+|Function|CloudPal|Typical VPS|
+| -- | -- | -- |
+|**Target audience**| Normal people | Techies |
+|**Isolation**| Townhouse-style. You have your own roof - it is a full Virtual Machine (VM), not a leaky container, like some VPSes are. | Apartment-style, expect the need to talk to superintedant |
+|**Privacy**| Service provider (Data Center) does not know who you are. You buy a ticket from Tradle and pay with it to the Data Center | VPS provider got your name and credit card |
+|**Checks and balances**| We, your product developer are not your service provider. This gives you proivacy and leverage over both of us. Move any time to another Data Center for whatever reason, no need to lose remaining monthly payment and setup a new account. | You are at the mercy of your VPS provider |
+|**Moving target for hackers**| We make it hard for hackers, like skeet shooting, no like shooting stars. CloudPal activates and de-activates as you need it, this is how we keep our prices low, and make it harder for hackers to hit you. | Sitting ducks |
+|**Open Source**| Yes, we do not know any other provider that is Open Source (tell us if we missed another brave soul). Does it make it hard for us to make money? You bet, but we figure this is the only way you can trust us. | Any hidden surveilance cameras in your appartment? Who knows. No way to verify their claims. They likely also use open source software, and also the prorietary one ... | 
+|**Apps**| Consumer apps. So far we have a Private network for all your devices (which includes VPN), document Vault. | Apps for techies | 
+| **No snooping by us**. | We do not have an ability to access your data, secret keys or network activity. The way we implemneted the payment system, we can't connect your name and the CloudPal you are running |VPS provider knows who you are |
+|**Limiting Data Center's powers of snooping**| With CloudPal, the Data Center does not know who you are, since your payment ticket did not carry any idetifiable data. The only way Data Center can snoop on you with CloudPal is by takeing a snapshot of operating memory on your CloudPal and try to deduce some information from it. Note that all cloud providers have this capability. Yet, the solution for this is coming - encrypted memory for virtual machines will be possible soon. Note that this relates only to data in RAM. The rest of the data,in storage and on the wire are always encrypted. | They know your name and all payment details |Worse, as VPS provider knows who you are |
+|**Network sooping**| Data Center can trace source address of the traffic and the address where it is heading out. Your home router or your mobile on a cell phone network will reveal their source address to the Data Center's network. This is standard for any VPS provider. To hide your IP address you need to use I2P, Tor or other similar solutions. You need to understand the law of your jurisdiction, and that the government can compel the Data Center with the due process or covertly. | Worse, as VPS provider knows who you are |
