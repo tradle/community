@@ -5,9 +5,8 @@ sidebar_label: "P2P & Local Cloud"
 slug: /
 custom_edit_url: https://github.com/tradle/why-hypercore/blob/master/README.md
 ---
-
-## Personal Data in multi-device world <!-- omit in toc -->
-We are working on the idea that Personal Comuting is entering a new major cycle, which will be based on [software defined networks](https://github.com/tradle/simplecloud/blob/main/README.md), software-defined compute and software-defined storage for personal use.
+# Personal Data in multi-device world <!-- omit in toc -->
+We are working on the idea that Personal Comuting is entering a new major cycle, which will be based on [software defined networks](SimpleCloud), software-defined compute and software-defined storage for personal use.
 
 As we are exploring here the design for data management in multi-device world using our chosen framework, Hypercore. You can find a lot more information on Hypercore in this [rapidly growing FAQ](FAQ.md).
 
@@ -259,3 +258,4 @@ Note that Hypercore team still has work to do on efficient editing of large file
 ### Continuous Backup
 
 Personal and team data backup. Usable on mobiles, desktops, and servers. Hypercore is archive-able to S3.
+

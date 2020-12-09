@@ -4,22 +4,19 @@ module.exports = {
   url: 'https://tradle.github.io',
   baseUrl: '/community/',
   onBrokenLinks: 'throw',
-  favicon: 'img/favicon4.ico',
+  favicon: 'img/favicon5.ico',
   organizationName: 'tradle', // Usually your GitHub org/user name.
   projectName: 'community', // Usually your repo name.
   themeConfig: {
     navbar: {
       logo: {
+        href: "https://tradle.io",
+        target: '_self',
         alt: 'Tradle',
         src: 'img/tradle-tiny.jpg',
         srcDark: 'img/tradle-tiny-light.png',
       },
-      items: [{
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
-        },
+      items: [
         {
           href: 'https://github.com/tradle',
           label: 'GitHub',

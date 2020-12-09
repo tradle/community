@@ -4,37 +4,36 @@ title: "Data Architecture"
 sidebar_label: "Data Architecture"
 custom_edit_url: https://github.com/tradle/why-hypercore/blob/master/FAQ.md
 ---
+# Hypercore universe FAQ <!-- omit in toc --> 
 
-## Hypercore universe  <!-- omit in toc --> 
-
-Many of the answers below are taken from Hypercore protocol discussion forum. All interpretations are ours, and so are the possible mistakes and misunderstandings. Please send corrections as pull requests, or request commit rights. Questions that need answers are marked with **Need help with this**.
-
+Many of the answers below are taken from the Hypercore protocol discussion forums (currently on [Discord](https://discord.com/invite/ga5hxGf) and the older forum on [Gitter](https://gitter.im/datproject/discussions)). All interpretations are ours, and so are the possible mistakes and misunderstandings. Please send corrections as pull requests, or request commit rights. Or just reach out to us over the email posted on github or on [@tradles](https://twitter.com/tradles/). Questions with partial answers are marked with **Need help with this**. Hypercore needs your help, please help us make it fully documented so that all P2P projects start benefiting from it.
 ## General
 
 This section is for general questions. See other sections for questions specific to individual Hypercore modules.
 
 ### What are the main components / modules / packages?
 
-- **Hypercore protocol**, [network protocol](https://www.datprotocol.com/deps/0010-wire-protocol/), providing messaging and peer data exchanges. 
-- **Hypercore**, append-only-log that can be used as-is, and is also used as a building block for other data structures. Hypercore is similar to block storage in Data Centers.
-- **Hypertrie**, a key-value store, which uses the underlying Hypercore and is used by other higher level services, like Hyperdrive for its directory structure and the file metadata. You can view key-value store as a simplest possible database and it is a common component in modern applications, and especially as embedded part of P2P applications. E.g. Ethereum uses KV store for [smart-contract storage](https://medium.com/hackernoon/getting-deep-into-ethereum-how-data-is-stored-in-ethereum-e3f669d96033).
-- **Hyperbee**, a key-value store, that also provides sorted range queries and therefore can be used by the database on top to build indexes.
-- **Corestore**, to managing many Hypercores you typically end up authoring or replicating from others.
-- **Hyperdrive**, a P2P alternative to Google Drive and Dropbox
-- **Hyperswarm**, a discovery mechanism for connecting to peers (sort of a decentralized DNS)
-- **Beaker Browser**, a full-blown browser that also supports the Web without servers (P2P Web).
+- **[Hypercore protocol](https://www.datprotocol.com/deps/0010-wire-protocol/)**, secure network protocol, providing reliable peer data exchanges.
+- **[Hypercore](https://github.com/hypercore-protocol/hypercore)**, append-only log that can be used as-is, and is also used as a building block for other data structures.
+- **[Hypertrie](https://github.com/hypercore-protocol/hypertrie)**, a key-value store, which uses the underlying Hypercore and is used by other higher level services, like Hyperdrive, for files directories and metadata. You can view key-value store as a simplest possible database and it is a [common component in modern applications](https://www.consul.io/docs/intro/vs/zookeeper), and especially as embedded store in P2P applications. E.g. Ethereum uses KV store for [smart-contract storage](https://medium.com/hackernoon/getting-deep-into-ethereum-how-data-is-stored-in-ethereum-e3f669d96033).
+- **[Hyperbee](https://github.com/mafintosh/hyperbee)** goes much higher than Hypertrie by providing sorted range queries, and can therefore can be used to build indexed databases. It is compatible with the popular LevelUP interface, a [standard building block](https://github.com/Level/awesome#awesome-level) for databases, query engines, and even several SQL engines.
+- **Hyperdrive**, a component for a P2P alternative to Google Drive and Dropbox, providing team file sharing, including great support for large media files. Hyperdrive can also be mounted as a normal OS folder, with the help of FUSE interface.
+- **[Corestore](https://github.com/andrewosh/corestore)**, to managing many Hypercores you typically end up authoring or replicating from others.
+- **[Hyperspace](https://github.com/hypercore-protocol/hyperspace)**, a server that uses Corestore and Hyperdrive to provide availability and persistence to hypercore data structures. It offers a network API for using hypercore from any language. Hyperspace notches another step towards the P2P alternative for Dropbox and Google Drive. Key missing components are a permission system and collaborative editing, which is work in progress by the hypercore community.
+- **[Hyperswarm](https://github.com/hyperswarm/hyperswarm)**, a discovery mechanism for connecting to other peers (sort of a decentralized DNS), direct P2P connections (NAT traversal), and P2P connection management.
+- **[Beaker Browser](https://beakerbrowser.com/)**, a full-blown browser that also supports the Web without servers (P2P Web).
 
 ### What is the USP (Unique Selling Proposition) of Hypercore?
 
-Hypercore is Open Source, it is not selling :-), but it is offering itself to developers. So what is it that is absolutely unique about it? Hypercore is P2P technology, but we saw other P2P technologies, BitTorrent and Bitcoin. What is unique about Hypercore?
+Hypercore is an open source P2P technology, but we saw other P2P technologies, BitTorrent and Bitcoin. What is unique about Hypercore?
 
 #### Streaming
 
 Hypercore's key USP is **streaming**. You can think of it as video streaming, but now for videos and also filesystems, databases, messages, IoT signals, and any other structured data constructs. With streaming, you get:
 
 - **Almost immediate access**, even though the data is not yet fully downloaded or may never need to be fully downloaded
-- **Higher security**, as it provides the integrity and authentication guarantees for each data element on the wire. This is huge! A typical database, file and messaging servers stake their security on the initial connection establishment and protecting communications on the wire. But normally they do not guard against a compromised or fraudulent peer, while Hypercore does. Our evolution in this area of security needs to always examine data from remote peers in view of the potential risk and the probability of fraud.
-- **Higher scalability**, as you can shove your streaming database in S3 and let billion people use it.
+- **Higher security**, as it provides the verifiable integrity and authentication for each data element on the wire. This is huge! A typical database, file and messaging servers stake their security on the initial connection establishment and protecting communications on the wire. But normally they do not guard against a compromised or fraudulent peer, while Hypercore does. Our evolution in this area of security needs to always examine data from remote peers in view of the potential risk and the probability of fraud.
+- **Higher scalability**, as you can shove your streaming database in AWS S3 and let billion people use it.
 
 This streaming point needs to be repeated again and again, as streaming data, just by itself, without any other wonderful Hypercore capabilities, may create a new class of applications, much like Netflix re-invented the movie watching. This paradigm shift is one reason why Hypercore is hard to grok for app developers, it just requires full rethinking of our current architectures.
 
@@ -54,7 +53,7 @@ Another USP of Hypercore is that it implements essential patterns of distributed
 - forensic investigations
 - playing out what-if business scenarios
 - to support blockchain reorg in a full node
-- for performing risky operations, knowing you can come back to a starting point 
+- for performing risky operations, knowing you can come back to a starting point, such as installing a new version of the app and rolling back if it does not work well. Same for changing configuration of the system and rolling back
 - a million other use cases, all with one simple abstraction, that all users already know and love
 
 **Recovery** Same history capability can be used for classic database point-in-time recovery, DB and filesystem snapshots, and versioning for data integrity assurance, VM snapshots, filesystem and DB snapshots, container image layers, etc. etc.
@@ -88,7 +87,11 @@ By relying on providers without a mobility we give up on self-sovereignty and co
 
 There is a new hot area in Big Data world for querying static databases. In AWS it is Athena, based on Apache Presto engine, and SQL SELECT. CSV Files (or files in JSON, Parquet, ORC, Avro formats) are shoved into S3 and then queried by Serverless applications and by Business Intelligence packages like Tableau.
 
-This requires no databases servers and shows where Hyperbee can be very useful. 
+This requires no databases servers and shows where Hyperbee can be very useful.
+
+Database with data stored in S3 (or the like) is very tricky to make performant. AWS Athena uses above specific formats, helps split large files into smaller chunks, has tools to prepare columnar indexes for each S3 object to enable search queries, adds extra metadata to help decide which S3 object contains the right subset of data for the query and provides a farm of servers that queue and execute your queries. S3 Select provides a simpler alternative to above, avoiding the use of server farm, but also with decreased functionality. 
+
+Why is this important to understand in view of Hyperbee streaming? Because Hyperbee provides a similar capability implemented in a completely different way. It not only does not require servers, like S3 Select, its underlying protocol is optimized to load byte-ranges from the [S3 object] offset, and efficiently traverses the btree (in Hyperbee) of the trie (in Hypertrie) to avoid extra round trips when executing queries for remote data (S3 in this case). This is a so called sparse mode in Hypercore.
 
 What other applications that can we think of that can be enabled by such a server-less DB, a DB that redefines how querying is done (via sparse data propagation), a DB that embeds a replication mechanism?
 
@@ -101,7 +104,7 @@ Some pointers to possible answers can be found when we compare a P2P source cont
 But Hypercore can do more - it is built as a data and communications framework for modern decentralized applications.
 
 1. Applications need data structures. Hypercore provides append-only log, Hypertrie key-value store, Hyperbee database and Hyperdrive filesystem.
-2. Hypercore support data editing as a design principle. [BitTorrent enhancement BEP 46](https://news.ycombinator.com/item?id=17306106) exists for updating files, but it does not allow updating a record in a database, so is not suitable for applications.
+2. Hypercore supports data editing as a design principle. [BitTorrent enhancement BEP 46](https://news.ycombinator.com/item?id=17306106) exists for updating files, but it is limited, e.g. it does not allow updating a record in a database, so is not suitable for applications.
 3. It provides full data add/edit version history which allows auditing, point-in-time-recovery, and state snapshots.
 4. It provides sparse download like BitTorrent, but extends it to databases.
 5. Hypercore has data access authentication.
@@ -113,10 +116,14 @@ Note that WebTorrent's tech can be helpful to Hypercore, as it perfected peer di
 
 ### How is Hypercore different from ScuttleButt (SSB)?
 
-- SSB is a peer-to-peer network for streaming feeds of JSON objects. Its primary data-structure is the "feed."
-- SSB is not suited for streaming, as it does not have a sparse data structure (enabled in Hypercore by Merkle trees, while SSB uses linked lists).
-- SSB uses a gossip protocol to sync data between peers. It does not automate peer discovery for a given dataset (e.g. via DHT) so topology must be manually managed. Hypercore uses a DHT to automate discovery of peers for exchanging of data.
-- SSB is primarily focused on social media applications. Hypercore has been growing towards a more generic model of structured data (file systems, databases) spread and synchronized over many devices.
+[Secure Scuttlebutt (SSB)](https://en.wikipedia.org/wiki/Secure_Scuttlebutt) is a peer-to peer communication protocol, mesh network, and self-hosted social media ecosystem. Hypercore has been growing towards a more generic model of structured data (file systems, databases) synchronized over many devices.
+
+- **Durability**. Each user hosts their own content and the content of the peers they follow, which provides fault tolerance. Same as with Hypercore.
+- **Availability**. It suffers from less than 100% availability, since peers are not always online. This is similar to Hypercore. Always-on seeding nodes are needed.
+- **Integrity**. Messages are digitally signed and added to an append-only list of messages published by an author, like Hypercore. It ensures content is not tempered with as it is propagated through the network, like Hypercore. 
+- **Consistency**. Data is distributed with a simple read-only eventual consistency, like Hypercore.
+- **Streaming**. SSB is not well suited for streaming, as it does not have a sparse data structure (enabled in Hypercore by Merkle trees, while SSB uses linked lists).
+- SSB uses a gossip protocol to sync data between peers. It does not automate peer discovery for a given dataset (e.g. via DHT), so topology must be manually managed. Hypercore uses a DHT to automate discovery of peers for exchanging of data.
 
 ### How is Hypercore different from IPFS?
 
@@ -126,21 +133,30 @@ You can review Reddit discussion that makes [some good points](https://www.reddi
 
 Some key differences, [described here](https://www.datprotocol.com/deps/0002-hypercore/), are:
 
-- Mutability. From the start IPFS was designed as an immutable storage, while Hypercore was designed as a mutable storage. In Hypercore editable content was a prime design objective, supported by the internal data structures, its protocol, Change Data Capture system, APIs, etc.
+| Feature | IPFS | Hypercore | 
+| -- | -- | -- |
+|Addressing | Content-based addressing | Public-key based addressing |
+|Addressing stability |  Dynamic address, changing as block changes | Static stable address |
+|Addressing granularity| each block has unique address (block's hash) | Address (pub key) corresponds to a collection of objects / files, each consisting of many blocks |
+|Filesystem|Low. Files are composed of lists of linked blocks, no notion of file directories, metadata, |Great. Files are managed as full-blown filesystem, with stable API and a daemon that provides REST API and [POSIX-compliant](https://en.wikipedia.org/wiki/POSIX) OS extension, so it appears to users as a regular folder|
+|Storage size efficiency | Great. Same block can be reused on your machine, even between files. This is usually called deduplication, or dedup. But when block changes, old block remains in storage.| Low. No block-level dedup. Change in one byte, creates a new version of the file. File-level dedup can be achieved with additional management level, called corestore. |
+|Mutability| Low. Originally developed for static content, but is being re-designed now. Specifically, the IPNS component attempts to provide stable hash-based address for the file (the tip of the list of blocks), but it needs to be refreshed periodically. New project IPLD is in development and aims for structured data, such as adding primitive data types, maps, lists |In Hypercore editable content was a prime design objective, supported by the internal data structures, its protocol, Change Data Capture system, APIs, etc. Structured data are supported by Hypertrie and Hyperbee |
+|Hyper-linking | Yes. Formal specification, called CID. |Partial. URLs work in Beaker, [Agregore](https://github.com/AgregoreWeb/agregore-browser) and [Gateway](https://gitlab.com/gateway-browser/gateway/) browsers, but formal definition for links for structured data is still in works |
+|Human-friendly naming| No. [IPNS](https://docs.ipfs.io/concepts/ipns/#example-ipns-setup) is not human friendly. | No. Hypercore's hyper:// URLs includes hash and is not human-friendly |
+|Databases|TBD. [OrbitDB](https://github.com/orbitdb/orbit-db), [ThreadDB](https://docs.textile.io/threads/), [AvionDB](https://github.com/dappkit/aviondb)|Two variants: Key-value store (Hypertrie) and LevelUP-compatible DB (Hyperbee). Embedded DB, does not require DB server. Provides unique streaming capability to greatly improve storage size and startup time. Using Hypercore data structures community produced replicated databases [KappaDB](https://github.com/kappa-db) and [multi-hyperbee](https://github.com/tradle/multi-hyperbee)|
+|Availability|Fairly high. IPFS community sponsors hosting of content, there are also commercial providers like [Infura](https://infura.io/) and [Textile](https://textile.io/), and Filecoin protocol to reward hosting | Low. See for example [Our Networks](https://ournetworks.ca/) page referring to both IPFS and Dat URLs and Dat URL does not open. Same [here](https://2019.ournetworks.ca/). [Homebase](https://github.com/beakerbrowser/homebase) attempted to provide hosting. [Datdot](https://github.com/playproject-io/datdot-service) project is developing blockchain-based reward system. Perhaps we need a breakthrough hosting model here, could VPS-made-simple be it?|
+|Startup speed| Slow | Great. Hypercore provides sparse replication for any type of data, that allows immediate streaming of both structured data and media content.|
+| Discovery |  Uses DHT. Avoids dependency on a more centralized DNS system. IPFS uses a DHT for every single data chunk globally, which works great for dedup. However, IPFS architecture creates an enormous overhead of DHT traffic compared to the other protocols. It also fails to benefit from the assumed knowledge that peers who have one chunk of the repository you’re interested in, are likely to also have more chunks you’re interested in. | Uses DHT (via Hyperswarm service). To avoid overloading DHT, topic in DHT is usually the whole Hyperdrive with potentially millions of files. To find a file via the DHT, URL becomes drive/file. In addition, Hyperswarm provides a flexible mechanism to design your own DHT-based discovery system, e.g. discover communities, teams, people, etc.|
+|Directory structures and file metadata| TBD. Somewhat. IPFS simulates directories by creating files with links to other files. | Full. Hypercore does full POSIX-compliant file system emulation and therefore can be mounted natively (via FUSE) to be viewed in File Explorer, Finder and to be used from the command line as a normal file system.|
 
-- Discovery. Both IPFS and Hypercore use DHT for discovery nowadays. This allows avoiding dependency on a more centralized DNS system. But they use DHT very differently. IPFS is more like BitTorrent, puts individual file reference in DHT, specifically the hash of file's contents (content-addressed). Since hash changes with file modifications, IPFS added a naming system [IPNS](https://docs.ipfs.io/concepts/ipns/#example-ipns-setup) so that the name in IPNS points to the file's latest version's hash. In Hypercore discovery is at higher level, to avoid overloading DHT. By default, the whole drives (Hyperdrives with potentially millions of files) are addressed via the DHT, URL of the file becomes drive/file. In addition, Hyperswarm service provides a flexible mechanism to design your own DHT-based discovery system, e.g. discover communities, teams, people, etc.
-
-- Directory structures and file metadata. IPFS simulates directories by creating files with links to other files. Hypercore does full file system emulation and therefore can be mounted natively (via FUSE) to be viewed in File Explorer, Finder and to be used from the command line as a normal file system.
-
-- File metadata. 
-- Neither [IPNS](https://docs.ipfs.io/concepts/ipns/#example-ipns-setup) nor Hypercore's Beaker URL have human-friendly addresses.
-
-Some notes on IPFS goodies:
+**Some notes on IPFS goodies:**
 
 - [IPNS has has captured imagination of Ethereum community](https://blog.infura.io/an-introduction-to-ipfs/) to build fully decentralized apps, as most blockchain apps today still keep data and processing centralized.
+- Smart contracts can refer to a hash of IPFS file and since it is address is content-based and therefore immutable, it provides the deterministic behavior for the smart contract. IPFS sponsors the storage to provide the guarantee for the data to be available for the dApp that uses this contract to be operational. Very cool!
 - IPFS project has produced solid core libraries, like libp2p, solving many of the same issues as Hypercore's Hyperswarm.
-- IPFS has implementations in a number of languages, while Hypercore is only in JavaScript. Rust implementation was recently started and hopefully will lead to overall health of Hypercore, forcing better documented specs and more test-suits.
+- IPFS has implementations in a number of languages, while Hypercore is only in JavaScript. Rust implementation of Hypercore was recently started and hopefully will lead to overall health of Hypercore, forcing better documented specs and more test-suits.
 - IPFS team runs a number of public servers that help make the network more usable.
+- IPLD is IPFS's sub-system to define structured interlinked data.  IPLD structures implemented on top are ipld-bitcoin or ipld-ethereum.
 
 #### more work needed to compare IPFS and Hypercore
 
@@ -151,38 +167,40 @@ https://docs.ipfs.io/concepts/usage-ideas-examples/#usage-ideas-and-examples
 
 Rough outline:
 
-- Availability. See for example [Our Networks](https://ournetworks.ca/) page referring to both IPFS and Dat URLs and Dat URL does not open. Same [here](https://2019.ournetworks.ca/).
-- Sparse loading
 - Support for streaming 1) live streaming, 2) recorded content 3) or just sharing a video on a messenger app.
 - Integrity - See section on one Hypercore integrity. But how is the integrity of the multiple feeds achieved, e.g. metadata and content feeds in Hyperdrive, or composite feeds like multi-hyperdrive? 
 How does IPFS support data integrity? 
 - Granularity, not just files, e.g. with Hypercore you can do live updates in the UI in Hypercore, like Gmail does it.
-- Does IPFS support connection Multiplexing? Hypercore has sessions with forward secrecy.
-- DHT differences with IPFS?
+- Does IPFS support connection Multiplexing?
+- Secure Session management. Hypercore has sessions with forward secrecy.
 - how is NAT traversal different?
 - HTTPS and other gateways to provide access when other things do not work. For example, see discussion on Hypercore not working on [campus network](https://github.com/datproject/discussions/issues/87).
 - Download progress and health of seeded data. See [discussion here](https://github.com/datproject/discussions/issues/81). How does IPFS handle it?
 - Docs availability and depth
-- Sparse. Diff with how IPFS support sparse
 - Bandwidth sharing. How does IPFS support it?
-- Multiplexing one connection. Secure Session management.
 - Pinning of files and dirs in IPFS. How management of local cache compares to Hypercore
-- Addressing / swarming individual files vs Drives (vs Peers?). IPFS uses a DHT for every single data chunk globally, for global dedup. However, IPFS architecture creates an enormous overhead of DHT traffic compared to the other protocols. It also fails to benefit from the assumed knowledge that peers who have one chunk of the repository you’re interested in, are likely to also have more chunks you’re interested in.
 - URL to individual data elements: File, Resource in the database.
 - Change Data Capture - does not exist in IPFS, attempts are being made to create something for 4 years
 - PubSub
-- Databases. OrbitDB, ThreadDB, AvionDB.https://medium.com/@rossbulat/orbitdb-deploying-the-distributed-ipfs-database-with-react-79afa1a7fabb
-  Wasn't IPFS was designed just for files? How can it support DBs?
 - S3: https://docs.ipfs.io/concepts/usage-ideas-examples/#aws-s3-integration
 - Hosting - https://docs.ipfs.io/concepts/usage-ideas-examples/#ipfs-hosting-with-textile
 - Mobile support https://twitter.com/jarredsumner/status/1223633060551225344
 - How to build chat and other apps on IPFS and Hypercore
 - Git on IPFS or Hypercore. How P2P supports Git: https://www.ctrl.blog/entry/git-p2p-compared.html
 
-### I wonder what P2P apps can be built on Hypercore?
+### Is there a synergy between blockchain and Hypercore?
 
-Need help with this.
-Meanwhile take a look at ideas [listed by IPFS community](https://docs.ipfs.io/concepts/usage-ideas-examples/):
+Both blockchain and Hypercore provide verifiable data structures. But blockchain is limited to very small storage and Hypercore is limited by absence of pubic timestamping and data history, and the absence of verifiable computations. See further on this in section *"Can Hypercore's author change history"*.
+
+Here are the cases where blockchain and Hypercore already help each other:
+
+- [Ara.one](https://ara.one/): crypto rewards for content
+- [Datdot](https://github.com/playproject-io/datdot-substrate): hosting with crypto incentives
+- Bitfinex: streaming hyperbee as trading signals for crypto exchange)
+
+This use case is theoretical but is plausible:
+
+Light client to blockchain full node, using streaming hyperbee, to avoid dependence on centralized infrastructure, like Infura. Most blockchain full nodes support a very limited amount of queries by default. Many apps need a lot more, and for that infrastructure players, like Infura, have created a SaaS infrastructure. But this re-centralized the decentralized P2P setup and re-inserts a trust into a specific company.
 
 ### Does Hypercore have a community?
 
@@ -206,7 +224,7 @@ Is there an answer to those perpetual problems of P2P? We believe there is. In c
 
 Hypercore is so much more. It is a foundation for apps, it is made for storage, content distribution, messaging, decentralized databases, etc. And it feels like it is a good match for analytics and AI as well (more on that later).
 
-Perhaps the answer to perpetual P2P reliability problems is not in copying the blockchain's mining model or offering crypto-incentives to host files. Maybe the answer is orthogonal, instead of looking to incentivize third-parties to keep our files, we could do it ourselves, with a free and always-available cloud peer, a companion to the sometimes-available personal devices peers.
+Perhaps the answer to perpetual P2P reliability problems is not in copying the blockchain's mining model or just offering the crypto-incentives to host files. Maybe the answer is orthogonal, instead of looking to incentivize third-parties to keep our files, we could do it ourselves, with an always-available cloud peer, a companion to the sometimes-available personal devices we own already.
 
 Viewed this way, cloud peer is not a hosting provider, it is just a different type of a personal device. It does does not have a screen, but it is capable in a different way, it complements our other personal devices with its 100% availability, a durable storage and elastic / expandable compute and data store.
 
@@ -234,20 +252,26 @@ Specifically, Hypercore team focused on the performance of its unique "streaming
 
 ### Who is using Hypercore P2P framework today?
 
-Need help with this.
-
-Partial answer is:
-
-Each project building on Hypercore is stretching its flexibility and contributes back solutions that are not yet available in the core. Then Hypercore team generalizes them and makes available for everyone. See some of the projects and their notable contributions:
+Each project building on Hypercore is stretching Hypercore's flexibility and contributes back solutions that are not yet available in the core. Then Hypercore team generalizes them and makes available for everyone. See some of the projects and their notable contributions:
 
 - Bitfinex, major crypto exchange, uses:
-  - Hyperswarm in their microservices framework [Grenache](https://github.com/bitfinexcom/grenache). Bitfinex helped [extend](https://github.com/bitfinexcom/grenache-grape/pull/73) Hyperswarm DHT to improve peer discovery. Bitfinex also pushed the envelope with Hypercore team on creating the first payments framework for Hypercore.
-  - Hyperbee to deliver [streaming data and signals](https://blog.bitfinex.com/dazaar/backtest-your-trading-strategies-with-bitfinex-terminal-honey-framework/) for backtesting trading strategies. Hyperbee allows Bitfinex to create a community of free and paid providers of trading signals that seed structured data like BitTorrent seeds files. 
+  - **Hyperswarm** in their microservices framework [Grenache](https://github.com/bitfinexcom/grenache). Bitfinex helped [extend](https://github.com/bitfinexcom/grenache-grape/pull/73) Hyperswarm DHT to improve peer discovery. Bitfinex also pushed the envelope with Hypercore team on creating the first payments framework for Hypercore.
+  - **Hyperbee** to deliver [streaming data and signals](https://blog.bitfinex.com/dazaar/backtest-your-trading-strategies-with-bitfinex-terminal-honey-framework/) for backtesting trading strategies. Hyperbee allows Bitfinex to create a community of free and paid providers of trading signals that seed structured data like BitTorrent seeds files.
+- [Pushpin](https://github.com/automerge/pushpin). A local-first collaborative corkboard app. PushPin supports taking notes, and can archive web content, images, PDFs, audio, video, and any other files you might want to hang out. It can synchronize across all your devices, and doesn't require any infrastructure to operate. Pushpin's collaborative simultaneous editing is achieved with the help of [Automerge CRDT](https://github.com/automerge/automerge).
 - [Cobox community](https://ledger-git.dyne.org/CoBox/cobox-resources/src/branch/master/ledger-deliverables/2_work-plan/mvp/mvp-design.md), focused on enabling teams. Cobox community created a KappaDB and collaborative editing.
 - [Peermaps](https://peermaps.org/), building P2P alternative to Google Maps based on OpenStreetMap
+- [Datdot](https://github.com/playproject-io/datdot-substrate), a P2P hosting for Dat / Hypercore data structures, with blockchain-based incentives. Similar to Filecoin for IPFS. Note a command-line (CLI) [publisher tool](https://github.com/RangerMauve/hyperdrive-publisher) to publish hyperdrive to some hosting site like Datdot, and later, restore it from hosting to another location. Restored hyperdrive is writeable (make sure the original is stopped and not writing anymore or you will get a corrupt hyperdrive - see Gotchas section)
 - [Sonar](https://arso-project.github.io/sonar-book), distributed media archives on Hypercore. Note an interesting [bulk update](https://discordapp.com/channels/709519409932140575/727886901100675083/755723909709561856) feature discussion re:Sonar, which sounds like addressing a pain similar to serverless apps.
+- [Beaker browser](https://beakerbrowser.com/). Beaker is likely the most complex app on top of the hypercore today. It supports both normal web browsing (https:// protocol) and hyper:// protocol. It also aims to become a P2P social media with a way for people to post blogs, comments, likes, etc. without central entity like Facebook. It achieves that with mutual hosting, where your Beaker browser will hosts sites for people you follow.
+- [Agregore](https://github.com/AgregoreWeb/agregore-browser) browser, takes a different approach, aiming to be very simple and lean, moving all additional capabilities into downloadable extensions. It also expands beyond http and hyper protocols, aiming to support any P2P protocol, including IPFS.
+Currently: http://, dat://, hyper://, ipfs://, ipns://, gemini://
+Planned: earthstar:// and eth://
+- [Gateway](https://gitlab.com/gateway-browser/gateway/) mobile browser
 - See at the bottom of [Hypercore protocol page](https://hypercore-protocol.org/)
+- [Consento](https://consento.org/). A mobile digital identity app  that you use to keep your data protected. Supports co-ownership of data. Protects keys to data by dividing a key into pieces, each given to some friend. To reconstruct the key, you ask some of those friends to give you their piece (let's say 2 out of 3 is enough - you choose the ratio, e.g. 3/4).
+- [Ara.one](https://ara.one/). ARA aims to help creators maximize the value of their work, removing third-parties, reducing hosting costs and, most importantly, attracting content consumers with rewards (via blockchain-based tokens).
 - See discussion forum where people [showcase their Hyper projects](https://discordapp.com/channels/709519409932140575/712037351244955809/712037741126221924).
+- And finally, see what [apps are built on IPFS](https://github.com/ipfs/awesome-ipfs) and new ideas [listed by IPFS community](https://docs.ipfs.io/concepts/usage-ideas-examples/).
 
 ### How integrity of the data is assured?
 
@@ -292,11 +316,23 @@ No, for Hypercore log, but can be added on top with the help of [Hypercore-multi
 
 ### Is there an authentication system?
 
-Yes. Each Hypercore feed has a corresponding public / private key pair. 
+Yes. Each Hypercore feed has a corresponding public / private key pair.
 
 1. The receiving feed must prove it knows sending feed's publicKey.
 2. There is an extension that allows to [prove you own feed's publicKey](https://github.com/substack/hypercore-authenticate-session-extension).
 3. There is a hook to registered a custom feed authenticator.
+
+### Is there an authorization system?
+
+Yes, but it has limitations:
+
+- **Level of granularity** is a hypercore. For example, if you like to give file access to one person and not to the other, you need to put this file in a separate hypercore to be able to achieve that. This works for small number of files, and is an approach used by Hypermerge for [Pushpin](https://github.com/automerge/pushpin). Note that you start hitting limits on performance with too many hypercores file handles used and limits on replication of many hypercores between nodes.
+
+- **Flexibility**. Access control is based on revealing the Public key for your hypercore to a peer who needs access. Since Public key is baked directly into the hypercore data structure, once it is revealed, there is no taking back the access. 
+
+See a [community discussion on this subject](https://discordapp.com/channels/709519409932140575/727886901100675083/762787502456963101) with one idea being to use **per-file encryption**. You can replicate all of the hypercore but have separate keys for individual records or files. This fits the project management apps, small team collaboration with light-weight documents, but is not suitable for large file sizes.
+
+Need help on this.
 
 ### Is there a discovery system to learn what feeds the other peer shares?
 
@@ -308,7 +344,7 @@ Need help with this.
 
 URL looks like this `hyper://<public-key>[+<version>]/[<path>][?<query>][#<fragment>]` where `public-key` is the address of the hypercore feed, `version` is an optional numeric identifier of a specific revision of the feed (also called index or seq, a block number in the append only log), and `path` `query` `fragment` are akin to HTTP URLs (though `query` has no defined interpretation). Formal schema is defined by [this specification](https://github.com/hypercore-protocol/hyp/blob/master/proposals/0002-hyper-url.md). Beaker browser is the primary way such URLs are used.
 
-There is a proposal for [Strong linking](https://github.com/datproject/dat/issues/976) which would add a `hash`. This is a hash of the hypercore at a specified `version`. This would lock down the history of the hypercore at that `version`.
+There is a proposal for [Strong linking](https://github.com/datproject/dat/issues/976) which would add a `hash` to URL. This is a hash of the hypercore at a specified `version`. This would lock down the history of the hypercore at that `version`.
 
 To understand why this link is strong, you need to know that every time a new block is added to hypercore feed, a new root hash corresponding to all the data in hypercore, up to current position, is calculated and saved in hypercore (this hash is also referred to as the Merkle tree root hash or just tree-hash). Now, should the author, by mistake or intentionally, rewind their hypercore to `version - 1` or earlier, and fill it with different data, the hash of the hypercore at `version` will be different and it will now not match the hash given in the URL.
 
@@ -487,13 +523,13 @@ This led to the emergence of services like [Infura](https://infura.io/customers/
 
 #### How does Hyperbee relate to Hypercore?
 
-Hyperbee uses Hypercore as an underlying storage and a replication mechanism. The cool thing is that one replication stream [can carry many Hypercores](https://discordapp.com/channels/709519409932140575/709519410557222964/755415844808556594), which can carry Hyperbees, Hypertries, and Hyperdrives. 
+Hyperbee uses Hypercore as an underlying storage and a replication mechanism. The cool thing is that one replication stream [can carry many Hypercores](https://discordapp.com/channels/709519409932140575/709519410557222964/755415844808556594), which can carry Hyperbees, Hypertries, and Hyperdrives.
 
 To manage multiple hypercore feeds, with permissions, use the corestore.
 
-#### What are the limitations on consistency?
+#### What are the consistency guarantees?
 
-This is a trick question :-) Hyperbee, like any other Hypercore-based data structure is single-writer. That means when it is replicated, it is replicated as-is, and eventually reaches the same state.
+Hyperbee, like any other Hypercore-based data structure is single-writer. That means when it is replicated, it is replicated as-is, and eventually reaches the same state. See multi-hyperbee that builds on top of hyperbee and offers consistency in a multi-master scenario (each node / peer making changes to objects in the same multi-hyperbee, even the simultaneous changes to the same object).
 
 #### Can it serve as LevelDB replacement?
 
@@ -643,42 +679,58 @@ Full apps will need some form of identity management. Hypercore provides the bas
 
 ### Multi-writer
 
-Hypercore is engineered with small single-purpose lego blocks that are highly composable into systems you want to build on it, especially as evident in case of multi-writer.
+Hypercore is engineered as a set of small single-purpose primitives (lego blocks) to be highly composable. This is a methodology used by Linux community and it allows to have simple mental model about the building blocks, and to create purpose-made systems. This is opposite to systems that attempt to serve many use cases upfront and become over time very hard to manage and secure. The example is OpenVPN which recently is being replaced with Wireguard and a family of single-purpose modules that are built for it. In Hypercore this approach is especially evident in the case of multi-writer.
 
-Hypercore is a personal data structure and so is Hypertrie, Hyperbee and Hyperdrive. This means only one private key can have access to write into it. In other words it is a single-writer module. The advantage of single-writer is a strong verifiable integrity, audit trail, support for streaming, and many others.
+Hypercore, and data structures on top (Hypertrie, Hyperbee and Hyperdrive) are single-writer primitives. This means only one private key can have access to write into each.
 
 But when hypercore is replicated to personal devices (phone, tablet, PC, cloud peers) each device needs to have its own private key, which means now multiple writers need to write into hypercore data structures. Same need arises when you want to collaborate with peers, with shared documents, files and databases, as you want peers to **edit** same objects and **search** across them.
 
 To support such use cases multi-writer modules can be composed on top.
 
-*Note that supporting multi-writer in core modules [has been requested many times](https://github.com/hypercore-protocol/hyperdrive/issues/230) but it turns out one size does not fit all. [HyperDB](https://github.com/mafintosh/hyperdb) is an abandoned multi-writer database that became too complex as it tried to provide discovery, networking, authorization, conflict resolution, etc. in one package, serving many masters and satisfying none.** 
+*Note that supporting multi-writer in core modules [has been requested many times](https://github.com/hypercore-protocol/hyperdrive/issues/230) but it turns out one size does not fit all. [HyperDB](https://github.com/mafintosh/hyperdb) is an abandoned multi-writer database that became too complex as it tried to provide discovery, networking, authorization, conflict resolution, etc. in one package, serving many masters and satisfying none.**
 
 So simple compositions, that are themselves composable is a better approach, see below:
 
-- [Multi-hyperdrive](https://github.com/RangerMauve/multi-hyperdrive/). Simple, does not provide discovery, networking, authorization. See [co-hyperdrive](https://github.com/RangerMauve/co-hyperdrive) built on top that adds authorizations. Scales well, sames as hyperdrive. Provides simple last-write-wins (LWW) conflict resolution.
-- [Multi-hyperbee](https://github.com/tradle/multi-hyperbee/). Simple, does not provide discovery, networking, authorization or conflict resolution (see section below). Scales well (same as hyperbee).
-- [Multi-hypertrie (upcoming)](https://github.com/tradle/multi-hyperbee/)
-- **Union**. A union of Hyperbees can be [easily constructed](https://github.com/tradle/why-hypercore/blob/master/test/hyperbeeUnion.test.js) utilizing another lego block, [a streaming sort-merge](http://github.com/mafintosh/sorted-union-stream).
+#### [Multi-hyperdrive](https://github.com/RangerMauve/multi-hyperdrive/)
+
+Allows several nodes share and write to the same drive. This is useful for multi-device support or in a team. It supports not just one, but a set of shared drives. At the moment it provides a simple last-write-wins (LWW) conflict resolution. It scales well on writes, sames as the hyperdrive and adds a fairly small performance penalty on reads (which grows O(n) with the number of drives). Drives are added to the shared set via an API at start. Multi-hyperdrive is network-agnostic. No authorization mechanism for individual files is provided.
+
+Note the difference with hyperdrive mounts. Mounts allow read-only access to peer's drives, while multi-hyperdrive allows both sides to write. With Mounts, the path to a files changes, with a mount point added to it, e.g. drive with path `/parlor` mounted at `/fred` will require need to be accessed via `/fred/parlor`. Multi-hyperdrive will keep the path the same, which is more natural, but it has a downside. If you are sharing between your own devices, this is perfect. But if you are sharing in a team, directory path `fred` may already be used by someone.
+
+#### [co-hyperdrive](https://github.com/RangerMauve/co-hyperdrive)
+
+Builds on top of multi-hyperdrive and allows to add / remove shared drives (writeable bi-directionally) to the set.
+
+#### [Multi-hyperbee](https://github.com/tradle/multi-hyperbee/)
+
+A single replicated hyperbee, not a set, no discovery, networking agnostic, no authorization. Provides convergence to the same state with automatic conflict resolution (CRDT), effectively creating a leaderless multi-master. Scales well on reads (same as hyperbee). Simple, one replicated hyperbee, not a set, no discovery. Network-agnostic, no authorization mechanism.
+
+#### Union
+
+A union of Hyperbees can be [easily constructed](https://github.com/tradle/why-hypercore/blob/master/test/hyperbeeUnion.test.js) utilizing another lego block, [a streaming sort-merge](http://github.com/mafintosh/sorted-union-stream).
 
 Need help with this:
 
 Cobox community has created a number of compositions:
-- [local indexes for remote feeds](https://discordapp.com/channels/709519409932140575/709519410557222964/756414542669676573). This approach works well for groups of up to 50 members.
+
+- **[local indexes for remote feeds](https://discordapp.com/channels/709519409932140575/709519410557222964/756414542669676573)**. This approach works well for groups of up to 50 members.
 - **KappaDB**. [Cobox community](https://ledger-git.dyne.org/CoBox/cobox-resources/src/branch/master/ledger-deliverables/3_mock-up/technology/architecture.md) produced a multi-writer DB [KappaDB](https://github.com/kappa-db).
 
-### Consensus / converging states
+### Consensus / converging state
 
-Normally a single person will not be using 2 devices simultaneously. Yet because of the loss of connectivity changes made on each device may need to be merged. This includes documents, filesystems and databases.
+Normally a single person will not be using 2 devices simultaneously. Yet because of the loss of connectivity changes made on each device may need to be merged. This includes documents, filesystems and databases. It becomes much more difficult in multi-user scenarios.
 
 In distributed systems, of which P2P is a subclass, reaching the same state is a hard problem with a long history. The reason it is hard was only recently formally described as a [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem). The holy grail of distributed systems is to reach the [ACID](https://en.wikipedia.org/wiki/ACID) guarantees of SQL databases - Atomicity, Consistency, Isolation and Durability. But SQL databases mostly operated on a single machine or on a closely managed cluster. Over the Internet the connectivity can be spotty and malicious actors abound.
 
   Handling bad actors became a specialty of blockchains, and it was a huge win for the P2P movement. Yet, since blockchains serve as shared databases for the whole world, they come with limitations. They have high transaction costs, low throughput, can store only the miniscule amounts of data, and can't hold or process private data. To overcome these limitations some applications re-centralize, adding web servers, application servers and DB servers. Others try to remain pure P2P by using IPFS or Hypercore.
 
-Algorithms, that tackle bad connections, **but not bad actors** have evolved from the highly complex Paxos to a simpler RAFT, to PBFT, and finally, in the last 5-7 years, to CRDT. CRTD is very lightweight and allows to operate leaderless multi-master, allowing each master to merging edits on the edge without any central coordination. This means no operators to run central service (Zookeeper, etcd, etc.) and handle complex cluster failure modes. Note that CRDT is quietly being used by AWS DynamoDB and Azure Cosmos - and if it is good enough for those web-scale databases, it is good enough for P2P.
+Algorithms, that tackle bad connections and reliability issues with compute and storage, **but not bad actors** have evolved from the highly complex Paxos to a simpler RAFT, to PBFT, and finally, in the last 5-7 years, to CRDT. CRDT is very lightweight and allows to operate leaderless multi-master, allowing each master to merging edits on the edge without any central coordination. This means no operators to run central service (Zookeeper, etcd, etc.) and handle complex cluster failure modes. CRDT, combined with HLC clocks, increases throughput with wait-free transaction ordering by avoiding any coordination between masters.
 
-Here is a [great introductory talk](https://www.youtube.com/watch?v=B5NULPSiOGw) on CRDT and an [advanced one](https://www.youtube.com/watch?v=PMVBuMK_pJY). 
+Note that CRDT is quietly being used by AWS DynamoDB and Azure Cosmos - and if it is good enough for those web-scale databases, it is good enough for P2P.
 
-For NodeJS the prime candidate is [Automerge](https://github.com/automerge/automerge), but there are others like [YJS](https://github.com/yjs/yjs) and [Delta-CRDT](https://github.com/peer-base/js-delta-crdts) (please share if you know a better one). CRDT is used by OrbitDB that runs on top of IPFS.
+Here is a [great introductory talk](https://www.youtube.com/watch?v=M8-WFTjZoA0) on CRDT (here is [another one](https://www.youtube.com/watch?v=B5NULPSiOGw)) and an [advanced one](https://www.youtube.com/watch?v=PMVBuMK_pJY).
+
+For NodeJS the prime candidate is [Automerge](https://github.com/automerge/automerge), but there are others like [YJS](https://github.com/yjs/yjs) and [Delta-CRDT](https://github.com/peer-base/js-delta-crdts) (please share if you know a better one). [CRDT is implemented](https://github.com/orbitdb/crdts) and used by OrbitDB that runs on top of IPFS.
 
 CRDT matches perfectly multi-device and collaborative editing use cases of P2P:
 
@@ -707,14 +759,24 @@ For reference, note that LevelDB is not multi-process safe, but [LMDB is](https:
 
 Need help with this.
 
+## Which additional modules, outside of core modules, are notable?
+
+| Module | Author | Description |
+| -- | -- | -- |
+| **[Hypercore-peer-auth](https://github.com/Frando/hypercore-peer-auth)** | [Franz Heinzmann (@Frando)](https://github.com/Frando) | Verifies that remote hypercore is an original author (is in the possession its secretKey). Also tells you which remote hypercore has just connected to you. This comes useful when you join a hyperswarm topic and get connections from many peers. Hyperswarm itself does not tell you the identity of the peer. Note, that since each hypercore has its own identity (keypair), you can designate one of the hypercores of the peer to represent the identity of the peer. Hypercore-peer-auth module implements an extension to hypercore protocol, and is an example of how you can create your own extensions. Note that there are channel extensions and [stream extensions](https://github.com/hypercore-protocol/hypercore-protocol#stream-message-extensions). Channel is encrypted, so its extensions are secure, not so with stream extensions.
+| **[Multi-key](https://github.com/mafintosh/hypercore-multi-key)**|  [Mathias Buus (@mafintosh)](https://github.com/mafintosh) | Allows to rotate a keypair for hypercore |
+| **[Streaming sort-merge](http://github.com/mafintosh/sorted-union-stream)** | [Mathias Buus (@mafintosh)](https://github.com/mafintosh) | This works great with several hyperbees. It is composable, so you can use more than 2 hyperbees |
+
 ## Where can I learn more about Hypercore universe?
 
 1. Visit the [Hypercore Protocol site](https://hypercore-protocol.org/). 
 
-2. In the summer of 2020 there was a [Dat Conference](https://www.youtube.com/playlist?list=PL7sG5SCUNyeYx8wnfMOUpsh7rM_g0w_cu). You can see the breadth of discussions that took place, both on tech and the opportunities. Note that Dat is the old name for Hypercore. The transition is in full swing, but you will still see it a lot.
+2. In the summer of 2020 there was a [Dat Conference](https://www.youtube.com/playlist?list=PL7sG5SCUNyeYx8wnfMOUpsh7rM_g0w_cu) (Dat was renamed to Hypercore this year). You can see the breadth of discussions that took place, both on tech and the opportunities.
 
-3. [Workshop at the 2020 Conference](https://github.com/RangerMauve/dat-workshop) with sources and video.
+3. [Workshop at the 2020 summer Hypercore / Dat Conference](https://github.com/RangerMauve/dat-workshop) with sources and video.
 
-4. [Kappa workshop](https://github.com/kappa-db/workshop) is a great basic intro, we [forked it](https://github.com/tradle/hypercore-workshop) to update to new materials and shift focus to core Hypercore modules.
+4. [Hyperbee 'P2P indexing and search' workshop at the 2020 fall Nodeconf conference](https://github.com/hypercore-protocol/p2p-indexing-and-search)
 
-5. Read [old FAQ](https://docs.dat.foundation/docs/faq) (before project was renamed from Dat to Hypercore).
+5. [Kappa workshop](https://github.com/kappa-db/workshop) is a great basic intro, we [forked it](https://github.com/tradle/hypercore-workshop) to update to new materials and shift focus to core Hypercore modules.
+
+6. Read [old FAQ](https://docs.dat.foundation/docs/faq) (before project was renamed from Dat to Hypercore).
