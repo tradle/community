@@ -11,14 +11,14 @@
     "serve": "docusaurus serve"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.66",
+    "@docusaurus/core": "^2.0.0-beta.14",
     "@docusaurus/preset-classic": "2.0.0-alpha.66",
-    "@easyops-cn/docusaurus-search-local": "^0.13.0",
-    "@mdx-js/react": "^1.6.21",
+    "@easyops-cn/docusaurus-search-local": "^0.21.4",
+    "@mdx-js/react": "^1.6.22",
     "clsx": "^1.1.1",
-    "docusaurus-lunr-search": "^2.1.7",
-    "jshint": "^2.12.0",
-    "npm-install-peers": "^1.2.1"
+    "docusaurus-lunr-search": "^2.1.15",
+    "jshint": "^2.13.2",
+    "npm-install-peers": "^1.2.2"
   },
   "browserslist": {
     "production": [
@@ -33,7 +33,7 @@
     ]
   },
   "devDependencies": {
-    "nodejieba": "^2.4.2",
+    "nodejieba": "^2.5.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   }
