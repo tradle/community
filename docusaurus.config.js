@@ -24,9 +24,6 @@ module.exports = {
         },
       ],
     },
-    googleAnalytics: {
-      trackingID: 'UA-92678667-1',
-    },
     footer: {
       style: 'dark',
       links: [{
@@ -85,6 +82,9 @@ module.exports = {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl: 'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+        },
+        googleAnalytics: {
+          trackingID: 'UA-92678667-1',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

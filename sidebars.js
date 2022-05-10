@@ -1,5 +1,5 @@
 module.exports = {
   someSidebar: {
-    "": ['README', 'FAQ', 'SimpleCloud', 'CloudPal']
+    "Main": ['README', 'FAQ', 'SimpleCloud', 'CloudPal']
   },
 };
